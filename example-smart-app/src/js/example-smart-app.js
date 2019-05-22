@@ -22,6 +22,15 @@
                     }
                   });
 
+        var apt = smart.patient.api.fetchAll({
+          type: 'Appointment',
+          query: {
+              status: 'booked'
+          }
+        });
+
+        console.log("Got appts: " + apt)
+
         $.when(pt, obv).fail(onError);
 
         $.when(pt, obv).done(function(patient, obv) {
@@ -60,7 +69,7 @@
           p.hdl = getQuantityValueAndUnit(hdl[0]);
           p.ldl = getQuantityValueAndUnit(ldl[0]);
 
-          ret.resolve(p);
+          ret.resolve(p, apt);
         });
       } else {
         onError();
@@ -114,7 +123,7 @@
     }
   }
 
-  window.drawVisualization = function(p) {
+  window.drawVisualization = function(p, apt) {
     $('#holder').show();
     $('#loading').hide();
     $('#fname').html(p.fname);
@@ -126,6 +135,7 @@
     $('#diastolicbp').html(p.diastolicbp);
     $('#ldl').html(p.ldl);
     $('#hdl').html(p.hdl);
+    $('#apts').html(apt)
   };
 
 })(window);
